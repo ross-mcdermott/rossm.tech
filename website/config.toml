@@ -1,6 +1,6 @@
 baseURL = "https://example.com"
-languageCode = "en-us"
-title = "LeaveIt"
+languageCode = "en-au"
+title = "Ross McDermott"
 theme = "LeaveIt"
 
 paginate = 12
@@ -58,12 +58,6 @@ preserveTaxonomyNames = true
     license= '<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">license</a>'
 
 [params.social]
-    GitHub = "xxoo"
-    Twitter = "xxoo"
-    Email   = "xxoo"
-    Instagram = "xxoo"
-    Wechat = "/images/me/wechat.png"  # Wechat QRcode image
-    Facebook = "xxoo"
-    Telegram = "xxoo"
-    Dribbble = "xxoo"
-    Medium = "xxoo"
+    GitHub = "ross-mcdermott"
+    Email   = "ross.mcdermott@outlook.com"
+    LinkedIn = "rossrmcdermottau"
