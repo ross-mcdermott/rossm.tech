@@ -1,4 +1,4 @@
-baseURL = "https://example.com"
+baseURL = "https://rossm.tech"
 languageCode = "en-au"
 title = "Ross McDermott"
 theme = "LeaveIt"
@@ -43,7 +43,7 @@ preserveTaxonomyNames = true
     since = 2018
     author = "Ross McDermott"                           # Author's name
     avatar = "/images/me/avatar.jpeg"           # Author's avatar
-    subtitle = "Architect | Cloud Specialist"         # Subtitle
+    subtitle = "Ross McDermott | Cloud Specialist"         # Subtitle
     cdn_url = ""           # Base CDN URL
     home_mode = "" # post or other
 

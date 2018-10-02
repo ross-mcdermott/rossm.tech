@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
     <url>
-      <loc>https://example.com/about/</loc>
+      <loc>https://rossm.tech/about/</loc>
       
       <lastmod>2014-04-09T00:00:00+00:00</lastmod>
       
@@ -13,7 +13,7 @@
     </url>
   
     <url>
-      <loc>https://example.com/2014/migrate-from-something/</loc>
+      <loc>https://rossm.tech/2014/migrate-from-something/</loc>
       
       <lastmod>2014-03-10T00:00:00+00:00</lastmod>
       
@@ -23,7 +23,7 @@
     </url>
   
     <url>
-      <loc>https://example.com/categories/</loc>
+      <loc>https://rossm.tech/categories/</loc>
       
       
       
@@ -33,7 +33,7 @@
     </url>
   
     <url>
-      <loc>https://example.com/posts/</loc>
+      <loc>https://rossm.tech/posts/</loc>
       
       <lastmod>2014-03-10T00:00:00+00:00</lastmod>
       
@@ -45,7 +45,7 @@
     </url>
   
     <url>
-      <loc>https://example.com/</loc>
+      <loc>https://rossm.tech/</loc>
       
       <lastmod>2014-04-09T00:00:00+00:00</lastmod>
       
@@ -57,7 +57,7 @@
     </url>
   
     <url>
-      <loc>https://example.com/tags/</loc>
+      <loc>https://rossm.tech/tags/</loc>
       
       
       
@@ -67,7 +67,7 @@
     </url>
   
     <url>
-      <loc>https://example.com/categories/uncategorized/</loc>
+      <loc>https://rossm.tech/categories/uncategorized/</loc>
       
       <lastmod>2014-03-10T00:00:00+00:00</lastmod>
       
