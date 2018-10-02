@@ -37,7 +37,7 @@ preserveTaxonomyNames = true
 [params]
     since = 2018
     author = "Ross McDermott"                           # Author's name
-    avatar = "/images/me/avatar.jpeg"           # Author's avatar
+    avatar = "/images/me.png"           # Author's avatar
     subtitle = "Ross McDermott | Cloud Specialist"         # Subtitle
     cdn_url = ""           # Base CDN URL
     home_mode = "" # post or other
