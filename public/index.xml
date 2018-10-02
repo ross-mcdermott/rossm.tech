@@ -10,7 +10,7 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>About Hugo</title>
+      <title>About</title>
       <link>https://rossm.tech/about/</link>
       <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
       
@@ -33,10 +33,10 @@
     
     <item>
       <title>Migrate to Hugo from Jekyll</title>
-      <link>https://rossm.tech/2014/migrate-from-something/</link>
+      <link>https://rossm.tech/2014/03/migrate-from-something/</link>
       <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
       
-      <guid>https://rossm.tech/2014/migrate-from-something/</guid>
+      <guid>https://rossm.tech/2014/03/migrate-from-something/</guid>
       <description>
 
 &lt;h2 id=&#34;move-static-content-to-static&#34;&gt;Move static content to &lt;code&gt;static&lt;/code&gt;&lt;/h2&gt;
