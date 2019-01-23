@@ -33,5 +33,7 @@ In additon to the above, limitations on the VNET resource type within ARM means 
 
 ## Resource to help plan:
 https://gallery.technet.microsoft.com/scriptcenter/Address-prefix-calculator-a94b6eed
+https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-manager-keyvault-parameter
+
 
 
