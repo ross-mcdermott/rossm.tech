@@ -4,13 +4,13 @@ date: 2014-03-10
 categories: ["Azure","ARM","DevOps","Network"]
 ---
 
-Creating an Azure Virtual Network is one of the most imporant, but daunting tasks you may be faced with when defining your Azure environment(s) and connecting back to an on premises (or other) network in a hybrid environment.
+Creating an Azure Virtual Network is one of the most imporant, but daunting tasks you may be faced with when defining your Azure environment(s) and enabling connectivity back to on premises (or other) network in a hybrid environment.
 
-The creation and management of a Virtual Network is something that aligns very well to use of ARM Templates, however without a clear approach to the problem, the template(s) quickly turn into an undecipherable, unmanagble state after a few changes are rolled out. By following a standardised approach to the problem, changes such as the additon of new subnets can be managed quickly while ensuring the template serve as both the desired state, and the living documentation of the as-is network at a given point in time.
+The creation and management of a Virtual Network is something that aligns very well to use of ARM Templates, however without a clear approach to the problem, the template(s) quickly morph into an unmanagble state after a few changes are rolled out. By following a standardised approach to the problem, common changes such as the additon of new Subnets and changes to UDR / NSG configuration become much simpler.
 
 
 ## What makes networks related templates complex?
-Simply put, what makes Virtual Network ARM templates complex (especially for a hybid network) is the number of resources that need to be defined to create a usable, secure network, and the dependencies / relationships between those resources. The following is an example for the resources we need to create for a simple 3 + gateway subnet network, configured with a VPN connection to another network.
+Simply put, what makes Virtual Network ARM templates complex (especially for a hybid network) is the number of resources that need to be defined to create a usable, secure network, and the dependencies / relationships between those resources. The following is an example for the resources we need to create for a simple 3 + Gateway subnet network, configured with a VPN connection to another network.
 
 | Resource Type | Quantity | Description |
 |------------------|----------------------------|------------------------------|
@@ -23,10 +23,15 @@ Simply put, what makes Virtual Network ARM templates complex (especially for a h
 |Microsoft.Network/routeTables|Count(Subnets) + GatewaySubnet|Define the NSGs for each subnet|
 |*Total*|12 Resources|
 
-In additon to the above, limitations on the VNET resource type within ARM means we cannot split the definiton of each subnet into its own template.
+In additon to the above, limitations on the VNET resource type within ARM means we cannot split the definiton of each subnet into its own template without some side effects we don't want to live with.
 
 ## Whats the plan?
 
 
+
+
+
+## Resource to help plan:
+https://gallery.technet.microsoft.com/scriptcenter/Address-prefix-calculator-a94b6eed
 
 
