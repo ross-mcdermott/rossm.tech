@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes" ?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Virtual Network on Ross McDermott</title>
+    <link>https://rossm.tech/categories/virtual-network/</link>
+    <description>Recent content in Virtual Network on Ross McDermott</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-au</language>
+    <lastBuildDate>Thu, 24 Jan 2019 00:00:00 +0000</lastBuildDate>
+    
+	<atom:link href="https://rossm.tech/categories/virtual-network/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+    <item>
+      <title>An ARM based Virtual Network you won&#39;t hate!</title>
+      <link>https://rossm.tech/2019/01/an-arm-based-virtual-network-you-wont-hate/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rossm.tech/2019/01/an-arm-based-virtual-network-you-wont-hate/</guid>
+      <description>Creating an Azure Virtual Network is one of the most imporant, but complex tasks you may be faced with when defining an Azure environment, whether for a pet project, or a corporate engagement.
+Whilst there are plenty of examples out there on the resources required for a network, this post outlines the approach and structure I have found best balances simplicity of maintenance with extensibility while keeping the ARM templates terse and easy to understand.</description>
+    </item>
+    
+  </channel>
+</rss>
