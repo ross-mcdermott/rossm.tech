@@ -47,28 +47,9 @@
           {{ $finalContent }}
     </div>
 
-    <div class="post-copyright">
-            {{ with .Site.Params.author }} 
-            <p class="copyright-item">
-                <span>Author:</span>
-                <span>{{ . }} </span>
-                </p>
-            {{ end }}
-           
-            {{ with .Permalink }} 
-            <p class="copyright-item">
-                    <span>Link:</span>
-                    <a href={{ . }}>{{ . }}</span>
-            </p>
-            {{ end }}
-            {{ with .Site.Params.license }} 
-            <p class="copyright-item lincese">
-                {{ . | safeHTML}}
-            </p>
-            {{ end }}
-    </div>
+   
 
-  
+   
     <div class="post-tags">
         {{ with .Params.tags }}
             <section>
@@ -94,12 +75,43 @@
         {{ end }}
     </div>
 
-    <div class="post-comment">
-          {{ if ( .Params.showComments | default true ) }}
-                 {{ if ne .Site.DisqusShortname "" }}
-                     {{ template "_internal/disqus.html" . }}
-                 {{ end }}
-          {{ end }}
+    <div class="post-copyright">
+        <small>
+            {{ with .Site.Params.author }} 
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>{{ . }} </span>
+                </p>
+            {{ end }}
+           
+            {{ with .Permalink }} 
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href={{ . }}>{{ . }}</span>
+            </p>
+            {{ end }}
+            {{ with .Site.Params.license }} 
+            <p class="copyright-item lincese">
+                {{ . | safeHTML}}
+            </p>
+            {{ end }}
+        </small>
     </div>
+
+  
+
+    <div class="post-comment">
+            <script src="https://utteranc.es/client.js"
+                    repo="ross-mcdermott/azure-network-with-arm"
+                    issue-term="pathname"
+                    theme="github-light"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+    </div>
+
+  
+
+   
 </article>
 {{- end }}
