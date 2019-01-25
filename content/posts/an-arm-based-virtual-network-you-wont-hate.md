@@ -7,7 +7,7 @@ tags: ["Azure","Best Practice"]
 
 Creating an Azure Virtual Network is one of the most imporant, but complex tasks you may be faced with when defining an Azure environment, whether for a pet project, or a corporate engagement.
 
-Whilst there are plenty of examples out there on the resources required for a network, this post outlines the approach and structure I have found best balances simplicity of maintenance with extensibility while keeping the ARM templates terse and easy to understand.
+Whilst there are plenty of examples out there on the resources required for a network, this post outlines the approach and structure I have found best balances simplicity and extensibility while keeping the ARM templates terse and easy to maintain.
 
 The accompanying sample ARM templates are available at [https://github.com/ross-mcdermott/azure-network-with-arm](https://github.com/ross-mcdermott/azure-network-with-arm).
 
