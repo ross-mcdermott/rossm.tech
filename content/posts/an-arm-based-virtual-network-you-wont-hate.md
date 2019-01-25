@@ -1,7 +1,8 @@
 ---
 title: An ARM based Virtual Network you won't hate!
-date: 2014-03-10
+date: 2019-01-24
 categories: ["Azure","ARM","Virtual Network"]
+tags: ["Azure","Best Practice"]
 ---
 
 Creating an Azure Virtual Network is one of the most imporant, but complex tasks you may be faced with when defining an Azure environment, whether for a pet project, or a corporate engagement.
