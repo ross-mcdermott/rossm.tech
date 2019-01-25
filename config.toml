@@ -35,12 +35,12 @@ preserveTaxonomyNames = true
     weight = 3
 
 [params]
-    since = 2018
+    since = 2019
     author = "Ross McDermott"                           # Author's name
     avatar = "/images/me.png"           # Author's avatar
     subtitle = "Ross McDermott | Cloud Specialist"         # Subtitle
     cdn_url = ""           # Base CDN URL
-    home_mode = "" # post or other
+    home_mode = "post" # post or other
 
     google_verification = ""
    
@@ -54,5 +54,5 @@ preserveTaxonomyNames = true
 
 [params.social]
     GitHub = "ross-mcdermott"
-    Email   = "ross.mcdermott@outlook.com"
+    Email   = "mcdermottr@gmail.com"
     LinkedIn = "rossrmcdermottau"

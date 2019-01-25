@@ -3,9 +3,9 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
     <url>
-      <loc>https://rossm.tech/about/</loc>
+      <loc>https://rossm.tech/2019/01/an-arm-based-virtual-network-you-wont-hate/</loc>
       
-      <lastmod>2014-04-09T00:00:00+00:00</lastmod>
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       
       
       
@@ -13,17 +13,57 @@
     </url>
   
     <url>
-      <loc>https://rossm.tech/2014/03/migrate-from-something/</loc>
+      <loc>https://rossm.tech/categories/arm/</loc>
       
-      <lastmod>2014-03-10T00:00:00+00:00</lastmod>
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       
       
+      
+      <priority>0</priority>
+      
+      
+    </url>
+  
+    <url>
+      <loc>https://rossm.tech/tags/azure/</loc>
+      
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
+      
+      
+      
+      <priority>0</priority>
+      
+      
+    </url>
+  
+    <url>
+      <loc>https://rossm.tech/categories/azure/</loc>
+      
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
+      
+      
+      
+      <priority>0</priority>
+      
+      
+    </url>
+  
+    <url>
+      <loc>https://rossm.tech/tags/best-practice/</loc>
+      
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
+      
+      
+      
+      <priority>0</priority>
       
       
     </url>
   
     <url>
       <loc>https://rossm.tech/categories/</loc>
+      
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       
       
       
@@ -35,7 +75,7 @@
     <url>
       <loc>https://rossm.tech/posts/</loc>
       
-      <lastmod>2014-03-10T00:00:00+00:00</lastmod>
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       
       
       
@@ -47,7 +87,7 @@
     <url>
       <loc>https://rossm.tech/</loc>
       
-      <lastmod>2014-04-09T00:00:00+00:00</lastmod>
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       
       
       
@@ -59,6 +99,8 @@
     <url>
       <loc>https://rossm.tech/tags/</loc>
       
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
+      
       
       
       <priority>0</priority>
@@ -67,9 +109,9 @@
     </url>
   
     <url>
-      <loc>https://rossm.tech/categories/uncategorized/</loc>
+      <loc>https://rossm.tech/categories/virtual-network/</loc>
       
-      <lastmod>2014-03-10T00:00:00+00:00</lastmod>
+      <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       
       
       

@@ -6,205 +6,235 @@
     <description>Recent content in Ross McDermott on Ross McDermott</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-au</language>
-    <lastBuildDate>Wed, 09 Apr 2014 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Thu, 24 Jan 2019 00:00:00 +0000</lastBuildDate>
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>About</title>
-      <link>https://rossm.tech/about/</link>
-      <pubDate>Wed, 09 Apr 2014 00:00:00 +0000</pubDate>
+      <title>An ARM based Virtual Network you won&#39;t hate!</title>
+      <link>https://rossm.tech/2019/01/an-arm-based-virtual-network-you-wont-hate/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://rossm.tech/about/</guid>
-      <description>&lt;p&gt;Hugo is the &lt;strong&gt;world’s fastest framework for building websites&lt;/strong&gt;. It is written in Go.&lt;/p&gt;
-
-&lt;p&gt;It makes use of a variety of open source projects including:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/russross/blackfriday&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;https://github.com/russross/blackfriday&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/alecthomas/chroma&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;https://github.com/alecthomas/chroma&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/muesli/smartcrop&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;https://github.com/muesli/smartcrop&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/cobra&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;https://github.com/spf13/cobra&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;a href=&#34;https://github.com/spf13/viper&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;https://github.com/spf13/viper&lt;/a&gt;&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;p&gt;Learn more and contribute on &lt;a href=&#34;https://github.com/gohugoio&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;GitHub&lt;/a&gt;.&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Migrate to Hugo from Jekyll</title>
-      <link>https://rossm.tech/2014/03/migrate-from-something/</link>
-      <pubDate>Mon, 10 Mar 2014 00:00:00 +0000</pubDate>
-      
-      <guid>https://rossm.tech/2014/03/migrate-from-something/</guid>
+      <guid>https://rossm.tech/2019/01/an-arm-based-virtual-network-you-wont-hate/</guid>
       <description>
 
-&lt;h2 id=&#34;move-static-content-to-static&#34;&gt;Move static content to &lt;code&gt;static&lt;/code&gt;&lt;/h2&gt;
+&lt;p&gt;Creating an Azure Virtual Network is one of the most imporant, but complex tasks you may be faced with when defining an Azure environment, whether for a pet project, or a corporate engagement.&lt;/p&gt;
 
-&lt;p&gt;Jekyll has a rule that any directory not starting with &lt;code&gt;_&lt;/code&gt; will be copied as-is to the &lt;code&gt;_site&lt;/code&gt; output. Hugo keeps all static content under &lt;code&gt;static&lt;/code&gt;. You should therefore move it all there.
-With Jekyll, something that looked like&lt;/p&gt;
+&lt;p&gt;Whilst there are plenty of examples out there on the resources required for a network, this post outlines the approach and structure I have found best balances simplicity and extensibility while keeping the ARM templates terse and easy to maintain.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;▾ &amp;lt;root&amp;gt;/
-    ▾ images/
-        logo.png
+&lt;p&gt;The accompanying sample ARM templates are available at &lt;a href=&#34;https://github.com/ross-mcdermott/azure-network-with-arm&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;https://github.com/ross-mcdermott/azure-network-with-arm&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;what-are-out-goals&#34;&gt;What are out goals?&lt;/h2&gt;
+
+&lt;p&gt;There are a few desired attributes which this approach has been designed to cater for:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Easy to mange the VNET over time, without needing to be an ARM master.&lt;/li&gt;
+&lt;li&gt;Simple to add new Subnets and related NSG / UDR configuration to the VNET.&lt;/li&gt;
+&lt;li&gt;Supports the general &lt;a href=&#34;https://blogs.msdn.microsoft.com/mvpawardprogram/2018/05/01/azure-resource-manager/&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;ARM best practices&lt;/a&gt; where possible / practical.&lt;/li&gt;
+&lt;li&gt;Conform to &amp;lsquo;infrastructure as code&amp;rsquo; based approches to enable automated deployment&lt;/li&gt;
+&lt;li&gt;Don&amp;rsquo;t make the people that support our network hate us&amp;hellip;remember..it might be you!&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;h2 id=&#34;embracing-convention-over-configuration&#34;&gt;Embracing convention over configuration&lt;/h2&gt;
+
+&lt;p&gt;One of the biggest benefits to this approach comes from embracing convention over configuration around the creation of subnets and their related &amp;lsquo;best practice&amp;rsquo; resources (NSGs and UDRs). Following the convention based approach also provides guard rails for subsequent contributors to be guided by and ensures the templates, and therefore the Resource Group they are deployed to, evolve in a familiar, and predictable way.&lt;/p&gt;
+
+&lt;h2 id=&#34;template-structure&#34;&gt;Template Structure&lt;/h2&gt;
+
+&lt;p&gt;Since we are using some convetions within the template, the actual structure of the template is quite simple. The below shows the logical structure of the sample templates:&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;&amp;mdash; diagram here &amp;mdash;&lt;/strong&gt;&lt;/p&gt;
+
+&lt;h3 id=&#34;variables-subnet-prefixes&#34;&gt;Variables: Subnet Prefixes&lt;/h3&gt;
+
+&lt;p&gt;The object variable &lt;strong&gt;subnet-address-prefixes&lt;/strong&gt; is defined to capture the prefixes for each subnet, this enables a simple &amp;lsquo;at a glance&amp;rsquo; understanding of the shape of the network, and the address spaces in use, and enables rich IDE validation of the properties.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;...
+&amp;quot;subnet-address-prefixes&amp;quot;: {
+    &amp;quot;mysubnet1Prefix&amp;quot;: &amp;quot;[concat(parameters(&#39;vnet-prefix&#39;), &#39;.1.0/24&#39;)]&amp;quot;,
+    &amp;quot;mysubnet2Prefix&amp;quot;: &amp;quot;[concat(parameters(&#39;vnet-prefix&#39;), &#39;.2.0/24&#39;)]&amp;quot;,
+    ...
+    &amp;quot;GatewaySubnetPrefix&amp;quot;: &amp;quot;[concat(parameters(&#39;vnet-prefix&#39;), &#39;.255.224/27&#39;)]&amp;quot;
+},
+...
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;should become&lt;/p&gt;
+&lt;p&gt;A handy tool to calculate the Gateway prefix can be found &lt;a href=&#34;https://gallery.technet.microsoft.com/scriptcenter/Address-prefix-calculator-a94b6eed&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;here&lt;/a&gt;&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;▾ &amp;lt;root&amp;gt;/
-    ▾ static/
-        ▾ images/
-            logo.png
+&lt;h3 id=&#34;variables-subnet-configuration&#34;&gt;Variables: Subnet Configuration&lt;/h3&gt;
+
+&lt;p&gt;Within the array variable &lt;strong&gt;subnets&lt;/strong&gt;, each subnet is configured with basic information, and referencing the appropriate address prefix as defined within  &lt;strong&gt;subnet-address-prefixes&lt;/strong&gt;. A slightly special case exists for the GatewaySubnet to ensure the name can be evaluated as a &amp;lsquo;constant&amp;rsquo; in subsequent logic flows to prevent the creation of an NSG resource for it.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;...
+&amp;quot;subnets&amp;quot;: [
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;mysubnet1&amp;quot;,
+        &amp;quot;addressPrefix&amp;quot;: &amp;quot;[variables(&#39;subnet-address-prefixes&#39;).mysubnet1Prefix]&amp;quot;,
+        &amp;quot;additionalNsgParameters&amp;quot;: {},
+        &amp;quot;additionalUdrParameters&amp;quot;: {}
+    },
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;mysubnet2&amp;quot;,
+        &amp;quot;addressPrefix&amp;quot;: &amp;quot;[variables(&#39;subnet-address-prefixes&#39;).mysubnet2Prefix]&amp;quot;,
+        &amp;quot;additionalNsgParameters&amp;quot;: {},
+        &amp;quot;additionalUdrParameters&amp;quot;: {}
+    },
+    ...
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;[variables(&#39;const_GatewaySubnet&#39;)]&amp;quot;,
+        &amp;quot;addressPrefix&amp;quot;: &amp;quot;[variables(&#39;subnet-address-prefixes&#39;).GatewaySubnetPrefix]&amp;quot;,
+        &amp;quot;additionalNsgParameters&amp;quot;: {},
+        &amp;quot;additionalUdrParameters&amp;quot;: {}
+    }
+],
+&amp;quot;const_GatewaySubnet&amp;quot;: &amp;quot;GatewaySubnet&amp;quot;
+...
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Additionally, you&amp;rsquo;ll want any files that should reside at the root (such as &lt;code&gt;CNAME&lt;/code&gt;) to be moved to &lt;code&gt;static&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;The properties are defined as:&lt;/p&gt;
 
-&lt;h2 id=&#34;create-your-hugo-configuration-file&#34;&gt;Create your Hugo configuration file&lt;/h2&gt;
+&lt;table&gt;
+&lt;thead&gt;
+&lt;tr&gt;
+&lt;th&gt;Property&lt;/th&gt;
+&lt;th&gt;Type&lt;/th&gt;
+&lt;th&gt;Purpose&lt;/th&gt;
+&lt;/tr&gt;
+&lt;/thead&gt;
 
-&lt;p&gt;Hugo can read your configuration as JSON, YAML or TOML. Hugo supports parameters custom configuration too. Refer to the &lt;a href=&#34;https://rossm.tech/overview/configuration/&#34;&gt;Hugo configuration documentation&lt;/a&gt; for details.&lt;/p&gt;
+&lt;tbody&gt;
+&lt;tr&gt;
+&lt;td&gt;name&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;The name of the subnet to be created&lt;/td&gt;
+&lt;/tr&gt;
 
-&lt;h2 id=&#34;set-your-configuration-publish-folder-to-site&#34;&gt;Set your configuration publish folder to &lt;code&gt;_site&lt;/code&gt;&lt;/h2&gt;
+&lt;tr&gt;
+&lt;td&gt;addressPrexix&lt;/td&gt;
+&lt;td&gt;string&lt;/td&gt;
+&lt;td&gt;This is mapped to the subnet when being created&lt;/td&gt;
+&lt;/tr&gt;
 
-&lt;p&gt;The default is for Jekyll to publish to &lt;code&gt;_site&lt;/code&gt; and for Hugo to publish to &lt;code&gt;public&lt;/code&gt;. If, like me, you have &lt;a href=&#34;http://blog.blindgaenger.net/generate_github_pages_in_a_submodule.html&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;_site&lt;/code&gt; mapped to a git submodule on the &lt;code&gt;gh-pages&lt;/code&gt; branch&lt;/a&gt;, you&amp;rsquo;ll want to do one of two alternatives:&lt;/p&gt;
+&lt;tr&gt;
+&lt;td&gt;additionalNsgParameters&lt;/td&gt;
+&lt;td&gt;object&lt;/td&gt;
+&lt;td&gt;The merging (via ARM &lt;a href=&#34;https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-template-functions-array#union&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;union&lt;/a&gt;) of &lt;strong&gt;subnet-address-prefixes&lt;/strong&gt; and this property are provided to the subnets NSG nested template&lt;/td&gt;
+&lt;/tr&gt;
 
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Change your submodule to point to map &lt;code&gt;gh-pages&lt;/code&gt; to public instead of &lt;code&gt;_site&lt;/code&gt; (recommended).&lt;/p&gt;
+&lt;tr&gt;
+&lt;td&gt;additionalUdrParameters&lt;/td&gt;
+&lt;td&gt;object&lt;/td&gt;
+&lt;td&gt;The merging (via ARM &lt;a href=&#34;https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-template-functions-array#union&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;union&lt;/a&gt;) of &lt;strong&gt;subnet-address-prefixes&lt;/strong&gt; and this property are provided to the subnets UDR nested template&lt;/td&gt;
+&lt;/tr&gt;
+&lt;/tbody&gt;
+&lt;/table&gt;
 
-&lt;pre&gt;&lt;code&gt;git submodule deinit _site
-git rm _site
-git submodule add -b gh-pages git@github.com:your-username/your-repo.git public
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
+&lt;h3 id=&#34;vnet-creation-looping-the-subnets&#34;&gt;VNET Creation: Looping the Subnets&lt;/h3&gt;
 
-&lt;li&gt;&lt;p&gt;Or, change the Hugo configuration to use &lt;code&gt;_site&lt;/code&gt; instead of &lt;code&gt;public&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Within the VNET resource, a copy loop exists at the property level, enabling us to loop through each of the above defined subnets to generate the subnet definitons in the required format for the VNET resource. The VNET has an ARM &lt;strong&gt;dependsOn&lt;/strong&gt; for the creation of the UDR and NSG resources.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code&gt;{
-    ..
-    &amp;quot;publishdir&amp;quot;: &amp;quot;_site&amp;quot;,
-    ..
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;...
+&amp;quot;copy&amp;quot;: [
+    {
+        &amp;quot;name&amp;quot;: &amp;quot;subnets&amp;quot;,
+        &amp;quot;count&amp;quot;: &amp;quot;[length(variables(&#39;subnets&#39;))]&amp;quot;,
+        &amp;quot;input&amp;quot;: {
+            &amp;quot;name&amp;quot;: &amp;quot;[variables(&#39;subnets&#39;)[copyIndex(&#39;subnets&#39;)].name]&amp;quot;,
+            &amp;quot;properties&amp;quot;: {
+                &amp;quot;addressPrefix&amp;quot;: &amp;quot;[variables(&#39;subnets&#39;)[copyIndex(&#39;subnets&#39;)].addressPrefix]&amp;quot;,
+                &amp;quot;networkSecurityGroup&amp;quot;: &amp;quot;[if(not(equals(variables(&#39;subnets&#39;)[copyIndex(&#39;subnets&#39;)].name,variables(&#39;const_GatewaySubnet&#39;))), json(concat(&#39;{\&amp;quot;id\&amp;quot;: \&amp;quot;&#39;, resourceId(resourceGroup().name, &#39;Microsoft.Network/networkSecurityGroups/&#39;, concat(variables(&#39;subnets&#39;)[copyIndex(&#39;subnets&#39;)].name,&#39;-nsg&#39;)), &#39;\&amp;quot;}&#39;)),json(&#39;null&#39;))]&amp;quot;,
+                &amp;quot;routeTable&amp;quot;: {
+                    &amp;quot;id&amp;quot;: &amp;quot;[resourceId(resourceGroup().name, &#39;Microsoft.Network/routeTables/&#39;, concat(variables(&#39;subnets&#39;)[copyIndex(&#39;subnets&#39;)].name,&#39;-udr&#39;))]&amp;quot;
+                }
+            }
+        }
+    }
+]
+...
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;You will notice some conditions and logic defining the &lt;strong&gt;networkSecurityGroup&lt;/strong&gt; property - this is due of desire to keep the template convetion based while the GatewaySubnet is actually a little different in that it is not supported to apply an NSG to it. Unfortunately the expression and logic syntax for ARM is not particarly readable, so in pseudo code, the expression is in effect doing this logic for us:&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-js&#34;&gt;if(loop[n].name != &#39;GatewaySubnet&#39;){ 
+    subnet.networkSecurityGroup = {
+        &amp;quot;id&amp;quot;: &amp;quot;&amp;lt;NSG Resouce ID&amp;gt;&amp;quot;
+    }
 }
-&lt;/code&gt;&lt;/pre&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;convert-jekyll-templates-to-hugo-templates&#34;&gt;Convert Jekyll templates to Hugo templates&lt;/h2&gt;
-
-&lt;p&gt;That&amp;rsquo;s the bulk of the work right here. The documentation is your friend. You should refer to &lt;a href=&#34;http://jekyllrb.com/docs/templates/&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;Jekyll&amp;rsquo;s template documentation&lt;/a&gt; if you need to refresh your memory on how you built your blog and &lt;a href=&#34;https://rossm.tech/layout/templates/&#34;&gt;Hugo&amp;rsquo;s template&lt;/a&gt; to learn Hugo&amp;rsquo;s way.&lt;/p&gt;
-
-&lt;p&gt;As a single reference data point, converting my templates for &lt;a href=&#34;http://heyitsalex.net/&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;heyitsalex.net&lt;/a&gt; took me no more than a few hours.&lt;/p&gt;
-
-&lt;h2 id=&#34;convert-jekyll-plugins-to-hugo-shortcodes&#34;&gt;Convert Jekyll plugins to Hugo shortcodes&lt;/h2&gt;
-
-&lt;p&gt;Jekyll has &lt;a href=&#34;http://jekyllrb.com/docs/plugins/&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;plugins&lt;/a&gt;; Hugo has &lt;a href=&#34;https://rossm.tech/doc/shortcodes/&#34;&gt;shortcodes&lt;/a&gt;. It&amp;rsquo;s fairly trivial to do a port.&lt;/p&gt;
-
-&lt;h3 id=&#34;implementation&#34;&gt;Implementation&lt;/h3&gt;
-
-&lt;p&gt;As an example, I was using a custom &lt;a href=&#34;https://github.com/alexandre-normand/alexandre-normand/blob/74bb12036a71334fdb7dba84e073382fc06908ec/_plugins/image_tag.rb&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;&lt;code&gt;image_tag&lt;/code&gt;&lt;/a&gt; plugin to generate figures with caption when running Jekyll. As I read about shortcodes, I found Hugo had a nice built-in shortcode that does exactly the same thing.&lt;/p&gt;
-
-&lt;p&gt;Jekyll&amp;rsquo;s plugin:&lt;/p&gt;
-
-&lt;pre&gt;&lt;code&gt;module Jekyll
-  class ImageTag &amp;lt; Liquid::Tag
-    @url = nil
-    @caption = nil
-    @class = nil
-    @link = nil
-    // Patterns
-    IMAGE_URL_WITH_CLASS_AND_CAPTION =
-    IMAGE_URL_WITH_CLASS_AND_CAPTION_AND_LINK = /(\w+)(\s+)((https?:\/\/|\/)(\S+))(\s+)&amp;quot;(.*?)&amp;quot;(\s+)-&amp;gt;((https?:\/\/|\/)(\S+))(\s*)/i
-    IMAGE_URL_WITH_CAPTION = /((https?:\/\/|\/)(\S+))(\s+)&amp;quot;(.*?)&amp;quot;/i
-    IMAGE_URL_WITH_CLASS = /(\w+)(\s+)((https?:\/\/|\/)(\S+))/i
-    IMAGE_URL = /((https?:\/\/|\/)(\S+))/i
-    def initialize(tag_name, markup, tokens)
-      super
-      if markup =~ IMAGE_URL_WITH_CLASS_AND_CAPTION_AND_LINK
-        @class   = $1
-        @url     = $3
-        @caption = $7
-        @link = $9
-      elsif markup =~ IMAGE_URL_WITH_CLASS_AND_CAPTION
-        @class   = $1
-        @url     = $3
-        @caption = $7
-      elsif markup =~ IMAGE_URL_WITH_CAPTION
-        @url     = $1
-        @caption = $5
-      elsif markup =~ IMAGE_URL_WITH_CLASS
-        @class = $1
-        @url   = $3
-      elsif markup =~ IMAGE_URL
-        @url = $1
-      end
-    end
-    def render(context)
-      if @class
-        source = &amp;quot;&amp;lt;figure class=&#39;#{@class}&#39;&amp;gt;&amp;quot;
-      else
-        source = &amp;quot;&amp;lt;figure&amp;gt;&amp;quot;
-      end
-      if @link
-        source += &amp;quot;&amp;lt;a href=\&amp;quot;#{@link}\&amp;quot;&amp;gt;&amp;quot;
-      end
-      source += &amp;quot;&amp;lt;img src=\&amp;quot;#{@url}\&amp;quot;&amp;gt;&amp;quot;
-      if @link
-        source += &amp;quot;&amp;lt;/a&amp;gt;&amp;quot;
-      end
-      source += &amp;quot;&amp;lt;figcaption&amp;gt;#{@caption}&amp;lt;/figcaption&amp;gt;&amp;quot; if @caption
-      source += &amp;quot;&amp;lt;/figure&amp;gt;&amp;quot;
-      source
-    end
-  end
-end
-Liquid::Template.register_tag(&#39;image&#39;, Jekyll::ImageTag)
+else {
+    subnet.networkSecurityGroup = null;
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;is written as this Hugo shortcode:&lt;/p&gt;
+&lt;h3 id=&#34;subnet-udr-creation-looping-nested-templates&#34;&gt;Subnet UDR Creation: Looping nested templates&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code&gt;&amp;lt;!-- image --&amp;gt;
-&amp;lt;figure {{ with .Get &amp;quot;class&amp;quot; }}class=&amp;quot;{{.}}&amp;quot;{{ end }}&amp;gt;
-    {{ with .Get &amp;quot;link&amp;quot;}}&amp;lt;a href=&amp;quot;{{.}}&amp;quot;&amp;gt;{{ end }}
-        &amp;lt;img src=&amp;quot;{{ .Get &amp;quot;src&amp;quot; }}&amp;quot; {{ if or (.Get &amp;quot;alt&amp;quot;) (.Get &amp;quot;caption&amp;quot;) }}alt=&amp;quot;{{ with .Get &amp;quot;alt&amp;quot;}}{{.}}{{else}}{{ .Get &amp;quot;caption&amp;quot; }}{{ end }}&amp;quot;{{ end }} /&amp;gt;
-    {{ if .Get &amp;quot;link&amp;quot;}}&amp;lt;/a&amp;gt;{{ end }}
-    {{ if or (or (.Get &amp;quot;title&amp;quot;) (.Get &amp;quot;caption&amp;quot;)) (.Get &amp;quot;attr&amp;quot;)}}
-    &amp;lt;figcaption&amp;gt;{{ if isset .Params &amp;quot;title&amp;quot; }}
-        {{ .Get &amp;quot;title&amp;quot; }}{{ end }}
-        {{ if or (.Get &amp;quot;caption&amp;quot;) (.Get &amp;quot;attr&amp;quot;)}}&amp;lt;p&amp;gt;
-        {{ .Get &amp;quot;caption&amp;quot; }}
-        {{ with .Get &amp;quot;attrlink&amp;quot;}}&amp;lt;a href=&amp;quot;{{.}}&amp;quot;&amp;gt; {{ end }}
-            {{ .Get &amp;quot;attr&amp;quot; }}
-        {{ if .Get &amp;quot;attrlink&amp;quot;}}&amp;lt;/a&amp;gt; {{ end }}
-        &amp;lt;/p&amp;gt; {{ end }}
-    &amp;lt;/figcaption&amp;gt;
-    {{ end }}
-&amp;lt;/figure&amp;gt;
-&amp;lt;!-- image --&amp;gt;
+&lt;p&gt;The creation of each of the UDR required is achived through the looping of a set of nested templates. This approach ensures that for every subnet there is a UDR resource defined.&lt;/p&gt;
+
+&lt;p&gt;To enable a convention based approach, the creation expects all subnet UDR definitons to take two parameters as shown below.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;...
+    &amp;quot;parameters&amp;quot;: {
+        &amp;quot;resource-name&amp;quot;: {
+            &amp;quot;value&amp;quot;: &amp;quot;[concat(variables(&#39;subnets&#39;)[copyIndex(&#39;subnet-udr-dependency-loop&#39;)].name,&#39;-udr&#39;)]&amp;quot;
+        },
+        &amp;quot;additional-parameters&amp;quot;: {
+            &amp;quot;value&amp;quot;: &amp;quot;[union(variables(&#39;subnet-address-prefixes&#39;),variables(&#39;subnets&#39;)[copyIndex(&#39;subnet-udr-dependency-loop&#39;)].additionalUdrParameters)]&amp;quot;
+        }
+    }
+...
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;usage&#34;&gt;Usage&lt;/h3&gt;
+&lt;p&gt;The additional parameters provided is the union of the &lt;strong&gt;subnet-address-prefixes&lt;/strong&gt; object and the &lt;strong&gt;additionalNsgParameters&lt;/strong&gt; object defined for the subnet. This approach enables each subnet to define any additonal parameters that should be passed to it without affecting the convention based paramter contract.&lt;/p&gt;
 
-&lt;p&gt;I simply changed:&lt;/p&gt;
+&lt;h3 id=&#34;subnet-nsg-creation-looping-nested-templates&#34;&gt;Subnet NSG Creation: Looping nested templates&lt;/h3&gt;
 
-&lt;pre&gt;&lt;code&gt;{% image full http://farm5.staticflickr.com/4136/4829260124_57712e570a_o_d.jpg &amp;quot;One of my favorite touristy-type photos. I secretly waited for the good light while we were &amp;quot;having fun&amp;quot; and took this. Only regret: a stupid pole in the top-left corner of the frame I had to clumsily get rid of at post-processing.&amp;quot; -&amp;gt;http://www.flickr.com/photos/alexnormand/4829260124/in/set-72157624547713078/ %}
+&lt;p&gt;The creation of the NSG resources follows the same convetion as the UDR resources and calls nested templates, the minor logical difference is that the NSG is not created for the SubnetGateway, and excluded with a condition check on the loop.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
+    &amp;quot;condition&amp;quot;: &amp;quot;[not(equals(variables(&#39;subnets&#39;)[copyIndex(&#39;subnet-nsg-dependency-loop&#39;)].name,variables(&#39;const_GatewaySubnet&#39;)))]&amp;quot;,
+    ...
+    &amp;quot;copy&amp;quot;: {
+                &amp;quot;name&amp;quot;: &amp;quot;subnet-nsg-dependency-loop&amp;quot;,
+                &amp;quot;count&amp;quot;: &amp;quot;[length(variables(&#39;subnets&#39;))]&amp;quot;
+            }
+    ...
+}
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;to this (this example uses a slightly extended version named &lt;code&gt;fig&lt;/code&gt;, different than the built-in &lt;code&gt;figure&lt;/code&gt;):&lt;/p&gt;
+&lt;h2 id=&#34;wrapping-up&#34;&gt;Wrapping up&amp;hellip;&lt;/h2&gt;
 
-&lt;pre&gt;&lt;code&gt;{{% fig class=&amp;quot;full&amp;quot; src=&amp;quot;http://farm5.staticflickr.com/4136/4829260124_57712e570a_o_d.jpg&amp;quot; title=&amp;quot;One of my favorite touristy-type photos. I secretly waited for the good light while we were having fun and took this. Only regret: a stupid pole in the top-left corner of the frame I had to clumsily get rid of at post-processing.&amp;quot; link=&amp;quot;http://www.flickr.com/photos/alexnormand/4829260124/in/set-72157624547713078/&amp;quot; %}}
+&lt;p&gt;Hopefully from the above, the benefits of a convention based approach whilst utlising nested templates has ticked a few boxes for you, and the simplicity to create a new subnet stright forward, all we need to do is:&lt;/p&gt;
+
+&lt;h4 id=&#34;1-add-new-subnet-prefix&#34;&gt;1. Add new subnet prefix&lt;/h4&gt;
+
+&lt;p&gt;Add a new entry to the &lt;strong&gt;subnet-address-prefixes&lt;/strong&gt; variable&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;   &amp;quot;mysubnet3Prefix&amp;quot;: &amp;quot;[concat(parameters(&#39;vnet-prefix&#39;), &#39;.3.0/24&#39;)]&amp;quot;,
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;As a bonus, the shortcode named parameters are, arguably, more readable.&lt;/p&gt;
+&lt;h4 id=&#34;2-define-the-subnet&#34;&gt;2. Define the subnet&lt;/h4&gt;
 
-&lt;h2 id=&#34;finishing-touches&#34;&gt;Finishing touches&lt;/h2&gt;
+&lt;p&gt;Add a new entry to the &lt;strong&gt;subnets&lt;/strong&gt; variable&lt;/p&gt;
 
-&lt;h3 id=&#34;fix-content&#34;&gt;Fix content&lt;/h3&gt;
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;   {
+        &amp;quot;name&amp;quot;: &amp;quot;mysubnet3&amp;quot;,
+        &amp;quot;addressPrefix&amp;quot;: &amp;quot;[variables(&#39;subnet-address-prefixes&#39;).mysubnet3Prefix]&amp;quot;,
+        &amp;quot;additionalNsgParameters&amp;quot;: {},
+        &amp;quot;additionalUdrParameters&amp;quot;: {}
+    },
+&lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;Depending on the amount of customization that was done with each post with Jekyll, this step will require more or less effort. There are no hard and fast rules here except that &lt;code&gt;hugo server --watch&lt;/code&gt; is your friend. Test your changes and fix errors as needed.&lt;/p&gt;
+&lt;h4 id=&#34;3-add-nested-templates-for-the-subnet&#34;&gt;3. Add nested templates for the subnet&lt;/h4&gt;
 
-&lt;h3 id=&#34;clean-up&#34;&gt;Clean up&lt;/h3&gt;
+&lt;p&gt;Add new templates for the subnet, for example:&lt;/p&gt;
 
-&lt;p&gt;You&amp;rsquo;ll want to remove the Jekyll configuration at this point. If you have anything else that isn&amp;rsquo;t used, delete it.&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;nestedtemplates/mysubnet3-nsg.json&lt;/strong&gt; - the NSG configuration (ensure filename is lower case)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;nestedtemplates/mysubnet3-udr.json&lt;/strong&gt; - the UDR configuration (ensure filename is lower case)&lt;/li&gt;
+&lt;/ul&gt;
 
-&lt;h2 id=&#34;a-practical-example-in-a-diff&#34;&gt;A practical example in a diff&lt;/h2&gt;
+&lt;h4 id=&#34;4-deploy-the-network&#34;&gt;4. Deploy the network&lt;/h4&gt;
 
-&lt;p&gt;&lt;a href=&#34;http://heyitsalex.net/&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;Hey, it&amp;rsquo;s Alex&lt;/a&gt; was migrated in less than a &lt;em&gt;father-with-kids day&lt;/em&gt; from Jekyll to Hugo. You can see all the changes (and screw-ups) by looking at this &lt;a href=&#34;https://github.com/alexandre-normand/alexandre-normand/compare/869d69435bd2665c3fbf5b5c78d4c22759d7613a...b7f6605b1265e83b4b81495423294208cc74d610&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;diff&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Deploy the network via you favourite ARM execution method (template = &lt;strong&gt;azuredploy.json&lt;/strong&gt;).&lt;/p&gt;
 </description>
     </item>
     

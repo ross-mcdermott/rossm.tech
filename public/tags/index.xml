@@ -6,9 +6,28 @@
     <description>Recent content in Tags on Ross McDermott</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-au</language>
+    <lastBuildDate>Thu, 24 Jan 2019 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://rossm.tech/tags/index.xml" rel="self" type="application/rss+xml" />
     
+    
+    <item>
+      <title>Azure</title>
+      <link>https://rossm.tech/tags/azure/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rossm.tech/tags/azure/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Best Practice</title>
+      <link>https://rossm.tech/tags/best-practice/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rossm.tech/tags/best-practice/</guid>
+      <description></description>
+    </item>
     
   </channel>
 </rss>
