@@ -12,29 +12,11 @@
     
     
     <item>
-      <title>ARM</title>
-      <link>https://rossm.tech/categories/arm/</link>
+      <title>Azure Resource Manager (ARM)</title>
+      <link>https://rossm.tech/categories/azure-resource-manager-arm/</link>
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://rossm.tech/categories/arm/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Azure</title>
-      <link>https://rossm.tech/categories/azure/</link>
-      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://rossm.tech/categories/azure/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Virtual Network</title>
-      <link>https://rossm.tech/categories/virtual-network/</link>
-      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
-      
-      <guid>https://rossm.tech/categories/virtual-network/</guid>
+      <guid>https://rossm.tech/categories/azure-resource-manager-arm/</guid>
       <description></description>
     </item>
     

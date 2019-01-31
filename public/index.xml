@@ -10,40 +10,36 @@
     <atom:link href="/" rel="self" type="application/rss+xml" />
     
     <item>
-      <title>An ARM based Virtual Network you won&#39;t hate!</title>
-      <link>https://rossm.tech/2019/01/an-arm-based-virtual-network-you-wont-hate/</link>
+      <title>An ARM based Virtual Network designed for change</title>
+      <link>https://rossm.tech/2019/01/an-arm-based-virtual-network-designed-for-change/</link>
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://rossm.tech/2019/01/an-arm-based-virtual-network-you-wont-hate/</guid>
-      <description>
+      <guid>https://rossm.tech/2019/01/an-arm-based-virtual-network-designed-for-change/</guid>
+      <description>&lt;p&gt;Creating an ARM template designed for change can be hard. Whilst there are plenty of examples out there on creating basic virtual networks with ARM templates, they generally are not structured to support the ongoing change over time we need. This post outlines an approach and structure that balances simplicity and extensibility while keeping the ARM templates terse and easy to maintain.
+&lt;/p&gt;
 
-&lt;p&gt;Creating an Azure Virtual Network is one of the most imporant, but complex tasks you may be faced with when defining an Azure environment, whether for a pet project, or a corporate engagement.&lt;/p&gt;
-
-&lt;p&gt;Whilst there are plenty of examples out there on the resources required for a network, this post outlines the approach and structure I have found best balances simplicity and extensibility while keeping the ARM templates terse and easy to maintain.&lt;/p&gt;
-
-&lt;p&gt;The accompanying sample ARM templates are available at &lt;a href=&#34;https://github.com/ross-mcdermott/azure-network-with-arm&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;https://github.com/ross-mcdermott/azure-network-with-arm&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The accompanying sample ARM templates are available on &lt;a href=&#34;https://github.com/ross-mcdermott/azure-network-with-arm&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;GitHub&lt;/a&gt;. Other typical VNET resources such as VPN configuration can be easily added to this sample, but have been ommitted to focus on the key concepts.&lt;/p&gt;
 
 &lt;h2 id=&#34;what-are-out-goals&#34;&gt;What are out goals?&lt;/h2&gt;
 
 &lt;p&gt;There are a few desired attributes which this approach has been designed to cater for:&lt;/p&gt;
 
 &lt;ul&gt;
-&lt;li&gt;Easy to mange the VNET over time, without needing to be an ARM master.&lt;/li&gt;
+&lt;li&gt;Easy to mange the VNET and related network resources over time, without needing to be an ARM master.&lt;/li&gt;
 &lt;li&gt;Simple to add new Subnets and related NSG / UDR configuration to the VNET.&lt;/li&gt;
 &lt;li&gt;Supports the general &lt;a href=&#34;https://blogs.msdn.microsoft.com/mvpawardprogram/2018/05/01/azure-resource-manager/&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;ARM best practices&lt;/a&gt; where possible / practical.&lt;/li&gt;
-&lt;li&gt;Conform to &amp;lsquo;infrastructure as code&amp;rsquo; based approches to enable automated deployment&lt;/li&gt;
-&lt;li&gt;Don&amp;rsquo;t make the people that support our network hate us&amp;hellip;remember..it might be you!&lt;/li&gt;
+&lt;li&gt;Conform to &amp;lsquo;infrastructure as code&amp;rsquo; based approches to enable automated deployment (scripted or CI/CD pipeline based)&lt;/li&gt;
 &lt;/ul&gt;
 
 &lt;h2 id=&#34;embracing-convention-over-configuration&#34;&gt;Embracing convention over configuration&lt;/h2&gt;
 
-&lt;p&gt;One of the biggest benefits to this approach comes from embracing convention over configuration around the creation of subnets and their related &amp;lsquo;best practice&amp;rsquo; resources (NSGs and UDRs). Following the convention based approach also provides guard rails for subsequent contributors to be guided by and ensures the templates, and therefore the Resource Group they are deployed to, evolve in a familiar, and predictable way.&lt;/p&gt;
+&lt;p&gt;One of the biggest benefits in the approach proposed comes from embracing convention over configuration around the creation of subnets and their related &amp;lsquo;best practice&amp;rsquo; resources (NSGs and UDRs). Following the convention based approach provides guard rails for subsequent contributors and ensures the templates, and therefore the Resource Group they are deployed to, evolve in a familiar, and predictable way.&lt;/p&gt;
 
 &lt;h2 id=&#34;template-structure&#34;&gt;Template Structure&lt;/h2&gt;
 
 &lt;p&gt;Since we are using some convetions within the template, the actual structure of the template is quite simple. The below shows the logical structure of the sample templates:&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;&amp;mdash; diagram here &amp;mdash;&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&#34;https://rossm.tech/articles/azure-vnet-arm-templates/design.jpg&#34; alt=&#34;Azure VNET ARM Design&#34; /&gt;&lt;/p&gt;
 
 &lt;h3 id=&#34;variables-subnet-prefixes&#34;&gt;Variables: Subnet Prefixes&lt;/h3&gt;
 
@@ -70,24 +66,20 @@
     {
         &amp;quot;name&amp;quot;: &amp;quot;mysubnet1&amp;quot;,
         &amp;quot;addressPrefix&amp;quot;: &amp;quot;[variables(&#39;subnet-address-prefixes&#39;).mysubnet1Prefix]&amp;quot;,
-        &amp;quot;additionalNsgParameters&amp;quot;: {},
-        &amp;quot;additionalUdrParameters&amp;quot;: {}
+        &amp;quot;additionalParameters&amp;quot;: {}
     },
     {
         &amp;quot;name&amp;quot;: &amp;quot;mysubnet2&amp;quot;,
         &amp;quot;addressPrefix&amp;quot;: &amp;quot;[variables(&#39;subnet-address-prefixes&#39;).mysubnet2Prefix]&amp;quot;,
-        &amp;quot;additionalNsgParameters&amp;quot;: {},
-        &amp;quot;additionalUdrParameters&amp;quot;: {}
+        &amp;quot;additionalParameters&amp;quot;: {}
     },
     ...
     {
         &amp;quot;name&amp;quot;: &amp;quot;[variables(&#39;const_GatewaySubnet&#39;)]&amp;quot;,
         &amp;quot;addressPrefix&amp;quot;: &amp;quot;[variables(&#39;subnet-address-prefixes&#39;).GatewaySubnetPrefix]&amp;quot;,
-        &amp;quot;additionalNsgParameters&amp;quot;: {},
-        &amp;quot;additionalUdrParameters&amp;quot;: {}
+        &amp;quot;additionalParameters&amp;quot;: {}
     }
-],
-&amp;quot;const_GatewaySubnet&amp;quot;: &amp;quot;GatewaySubnet&amp;quot;
+]
 ...
 &lt;/code&gt;&lt;/pre&gt;
 
@@ -116,18 +108,25 @@
 &lt;/tr&gt;
 
 &lt;tr&gt;
-&lt;td&gt;additionalNsgParameters&lt;/td&gt;
+&lt;td&gt;additionalParameters&lt;/td&gt;
 &lt;td&gt;object&lt;/td&gt;
-&lt;td&gt;The merging (via ARM &lt;a href=&#34;https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-template-functions-array#union&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;union&lt;/a&gt;) of &lt;strong&gt;subnet-address-prefixes&lt;/strong&gt; and this property are provided to the subnets NSG nested template&lt;/td&gt;
-&lt;/tr&gt;
-
-&lt;tr&gt;
-&lt;td&gt;additionalUdrParameters&lt;/td&gt;
-&lt;td&gt;object&lt;/td&gt;
-&lt;td&gt;The merging (via ARM &lt;a href=&#34;https://docs.microsoft.com/en-us/azure/azure-resource-manager/resource-group-template-functions-array#union&#34; rel=&#34;nofollow noreferrer&#34; target=&#34;_blank&#34;&gt;union&lt;/a&gt;) of &lt;strong&gt;subnet-address-prefixes&lt;/strong&gt; and this property are provided to the subnets UDR nested template&lt;/td&gt;
+&lt;td&gt;Provides a standard (convention) for where to define additonal parameters to pass through when creating UDR / NSGs&lt;/td&gt;
 &lt;/tr&gt;
 &lt;/tbody&gt;
 &lt;/table&gt;
+
+&lt;h3 id=&#34;variables-context&#34;&gt;Variables: Context&lt;/h3&gt;
+
+&lt;p&gt;Define a common context based object which can be simply passed through to dependent templates, and filled out more as required over time. This enables the standard network based information to be provided to subnet based NSGs etc in a standard way.&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;...
+&amp;quot;context&amp;quot;: {
+    &amp;quot;vnetName&amp;quot;: &amp;quot;[variables(&#39;vnet-resource-name&#39;)]&amp;quot;,
+    &amp;quot;vnetAddressSpace&amp;quot;: &amp;quot;[variables(&#39;vnet-address-space&#39;)]&amp;quot;,
+    &amp;quot;subnetAddressPrefixes&amp;quot;: &amp;quot;[variables(&#39;subnet-address-prefixes&#39;)]&amp;quot;
+}
+...
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;h3 id=&#34;vnet-creation-looping-the-subnets&#34;&gt;VNET Creation: Looping the Subnets&lt;/h3&gt;
 
@@ -165,77 +164,28 @@ else {
 }
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&#34;subnet-udr-creation-looping-nested-templates&#34;&gt;Subnet UDR Creation: Looping nested templates&lt;/h3&gt;
+&lt;h3 id=&#34;subnet-dependency-creation-looping-nested-template&#34;&gt;Subnet Dependency Creation: Looping nested template&lt;/h3&gt;
 
-&lt;p&gt;The creation of each of the UDR required is achived through the looping of a set of nested templates. This approach ensures that for every subnet there is a UDR resource defined.&lt;/p&gt;
-
-&lt;p&gt;To enable a convention based approach, the creation expects all subnet UDR definitons to take two parameters as shown below.&lt;/p&gt;
+&lt;p&gt;For each subnet, the template &lt;strong&gt;nestedtemplate/subnet-dependencies.json&lt;/strong&gt; is called as a sub-deployment, passing through the subnet to be created, and the &lt;strong&gt;context&lt;/strong&gt; variable used to provide standard information to the template.&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;...
     &amp;quot;parameters&amp;quot;: {
-        &amp;quot;resource-name&amp;quot;: {
-            &amp;quot;value&amp;quot;: &amp;quot;[concat(variables(&#39;subnets&#39;)[copyIndex(&#39;subnet-udr-dependency-loop&#39;)].name,&#39;-udr&#39;)]&amp;quot;
+        ...
+        &amp;quot;subnet&amp;quot;: {
+            &amp;quot;value&amp;quot;: &amp;quot;[variables(&#39;subnets&#39;)[copyIndex(&#39;subnet-dependency-loop&#39;)]]&amp;quot;
         },
-        &amp;quot;additional-parameters&amp;quot;: {
-            &amp;quot;value&amp;quot;: &amp;quot;[union(variables(&#39;subnet-address-prefixes&#39;),variables(&#39;subnets&#39;)[copyIndex(&#39;subnet-udr-dependency-loop&#39;)].additionalUdrParameters)]&amp;quot;
+        &amp;quot;context&amp;quot;: {
+            &amp;quot;value&amp;quot;: &amp;quot;[variables(&#39;context&#39;)]&amp;quot;
         }
     }
 ...
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;The additional parameters provided is the union of the &lt;strong&gt;subnet-address-prefixes&lt;/strong&gt; object and the &lt;strong&gt;additionalNsgParameters&lt;/strong&gt; object defined for the subnet. This approach enables each subnet to define any additonal parameters that should be passed to it without affecting the convention based paramter contract.&lt;/p&gt;
+&lt;p&gt;This template then in turn calls the specific template required based on the subnet object provided. The naming convention required for the NSG and UDR resource templates for each subnet are &lt;strong&gt;nestedtemplates/subnet-{name}-nsg.json&lt;/strong&gt; and &lt;strong&gt;nestedtemplates/subnet-{name}-udr.json&lt;/strong&gt; respectively.&lt;/p&gt;
 
-&lt;h3 id=&#34;subnet-nsg-creation-looping-nested-templates&#34;&gt;Subnet NSG Creation: Looping nested templates&lt;/h3&gt;
+&lt;h2 id=&#34;summary&#34;&gt;Summary&lt;/h2&gt;
 
-&lt;p&gt;The creation of the NSG resources follows the same convetion as the UDR resources and calls nested templates, the minor logical difference is that the NSG is not created for the SubnetGateway, and excluded with a condition check on the loop.&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;{
-    &amp;quot;condition&amp;quot;: &amp;quot;[not(equals(variables(&#39;subnets&#39;)[copyIndex(&#39;subnet-nsg-dependency-loop&#39;)].name,variables(&#39;const_GatewaySubnet&#39;)))]&amp;quot;,
-    ...
-    &amp;quot;copy&amp;quot;: {
-                &amp;quot;name&amp;quot;: &amp;quot;subnet-nsg-dependency-loop&amp;quot;,
-                &amp;quot;count&amp;quot;: &amp;quot;[length(variables(&#39;subnets&#39;))]&amp;quot;
-            }
-    ...
-}
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;wrapping-up&#34;&gt;Wrapping up&amp;hellip;&lt;/h2&gt;
-
-&lt;p&gt;Hopefully from the above, the benefits of a convention based approach whilst utlising nested templates has ticked a few boxes for you, and the simplicity to create a new subnet stright forward, all we need to do is:&lt;/p&gt;
-
-&lt;h4 id=&#34;1-add-new-subnet-prefix&#34;&gt;1. Add new subnet prefix&lt;/h4&gt;
-
-&lt;p&gt;Add a new entry to the &lt;strong&gt;subnet-address-prefixes&lt;/strong&gt; variable&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;   &amp;quot;mysubnet3Prefix&amp;quot;: &amp;quot;[concat(parameters(&#39;vnet-prefix&#39;), &#39;.3.0/24&#39;)]&amp;quot;,
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;2-define-the-subnet&#34;&gt;2. Define the subnet&lt;/h4&gt;
-
-&lt;p&gt;Add a new entry to the &lt;strong&gt;subnets&lt;/strong&gt; variable&lt;/p&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-json&#34;&gt;   {
-        &amp;quot;name&amp;quot;: &amp;quot;mysubnet3&amp;quot;,
-        &amp;quot;addressPrefix&amp;quot;: &amp;quot;[variables(&#39;subnet-address-prefixes&#39;).mysubnet3Prefix]&amp;quot;,
-        &amp;quot;additionalNsgParameters&amp;quot;: {},
-        &amp;quot;additionalUdrParameters&amp;quot;: {}
-    },
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h4 id=&#34;3-add-nested-templates-for-the-subnet&#34;&gt;3. Add nested templates for the subnet&lt;/h4&gt;
-
-&lt;p&gt;Add new templates for the subnet, for example:&lt;/p&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;nestedtemplates/mysubnet3-nsg.json&lt;/strong&gt; - the NSG configuration (ensure filename is lower case)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;nestedtemplates/mysubnet3-udr.json&lt;/strong&gt; - the UDR configuration (ensure filename is lower case)&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h4 id=&#34;4-deploy-the-network&#34;&gt;4. Deploy the network&lt;/h4&gt;
-
-&lt;p&gt;Deploy the network via you favourite ARM execution method (template = &lt;strong&gt;azuredploy.json&lt;/strong&gt;).&lt;/p&gt;
-</description>
+&lt;p&gt;By using a convention based approach, the top level template can be kept simple, while allowing detailed information to be passed through to the nested templates. The additon and defintion of new subnets, and related NSG / UDR rules can be achived easily within minimal changes while retaining the aspect of the best practice use of ARM templates.&lt;/p&gt;</description>
     </item>
     
   </channel>

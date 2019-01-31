@@ -12,6 +12,15 @@
     
     
     <item>
+      <title>ARM</title>
+      <link>https://rossm.tech/tags/arm/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rossm.tech/tags/arm/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Azure</title>
       <link>https://rossm.tech/tags/azure/</link>
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
@@ -26,6 +35,15 @@
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
       <guid>https://rossm.tech/tags/best-practice/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Virtual Network</title>
+      <link>https://rossm.tech/tags/virtual-network/</link>
+      <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://rossm.tech/tags/virtual-network/</guid>
       <description></description>
     </item>
     

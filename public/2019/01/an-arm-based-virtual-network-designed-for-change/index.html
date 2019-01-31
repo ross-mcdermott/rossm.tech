@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en-au">
+  <head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <meta http-equiv="X-UA-Compatible" content="chrome=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="robots" content="noodp"/>
+  <meta name="author" content="Ross McDermott">
+  
+  
+  
+  
+  
+  <link rel="canonical" href="https://rossm.tech/2019/01/an-arm-based-virtual-network-designed-for-change/" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#5bbad5">
+  <meta name="msapplication-TileColor" content="#da532c">
+  <meta name="theme-color" content="#ffffff">
+  <title>
+       
+       
+           An ARM based Virtual Network designed for change | Ross McDermott
+       
+  </title>
+  <meta name="title" content="An ARM based Virtual Network designed for change | Ross McDermott">
+    
+  
+  <link rel="stylesheet" href="/font/iconfont.css">
+  <link rel="stylesheet" href="/css/main.min.css">
+
+
+  
+  
+ 
+
+<script type="application/ld+json">
+ "@context" : "http://schema.org",
+    "@type" : "BlogPosting",
+    "mainEntityOfPage": {
+         "@type": "WebPage",
+         "@id": "https://rossm.tech"
+    },
+    "articleSection" : "posts",
+    "name" : "An ARM based Virtual Network designed for change",
+    "headline" : "An ARM based Virtual Network designed for change",
+    "description" : "<p>Creating an ARM template designed for change can be hard. Whilst there are plenty of examples out there on creating basic virtual networks with ARM templates, they generally are not structured to support the ongoing change over time we need. This post outlines an approach and structure that balances simplicity and extensibility while keeping the ARM templates terse and easy to maintain.
+</p>",
+    "inLanguage" : "en-au",
+    "author" : "Ross McDermott",
+    "creator" : "Ross McDermott",
+    "publisher": "Ross McDermott",
+    "accountablePerson" : "Ross McDermott",
+    "copyrightHolder" : "Ross McDermott",
+    "copyrightYear" : "2019",
+    "datePublished": "2019-01-24 00:00:00 &#43;0000 UTC",
+    "dateModified" : "2019-01-24 00:00:00 &#43;0000 UTC",
+    "url" : "https://rossm.tech/2019/01/an-arm-based-virtual-network-designed-for-change/",
+    "wordCount" : "854",
+    "keywords" : [ "Azure","Best Practice","Virtual Network","ARM", "Ross McDermott"]
+}
+</script>
+
+</head>
+
+  
+
+
+  <body class="">
+    <div class="wrapper">
+        <nav class="navbar">
+    <div class="container">
+        <div class="navbar-header header-logo">
+        	<a href="https://rossm.tech">Ross McDermott</a>
+        </div>
+        <div class="menu navbar-right">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+        </div>
+    </div>
+</nav>
+<nav class="navbar-mobile" id="nav-mobile" style="display: none">
+     <div class="container">
+        <div class="navbar-header">
+            <div> <a href="https://rossm.tech">Ross McDermott</a></div>
+            <div class="menu-toggle">
+                <span></span><span></span><span></span>
+            </div>
+        </div>
+     
+          <div class="menu" id="mobile-menu">
+                
+                
+                <a class="menu-item" href="/posts/" title="">Blog</a>
+                
+                <a class="menu-item" href="/categories/" title="">Categories</a>
+                
+                <a class="menu-item" href="/tags/" title="">Tags</a>
+                
+        </div>
+    </div>
+</nav>
+    	 <main class="main">
+          <div class="container">
+      		
+<article class="post-warp" itemscope itemtype="http://schema.org/Article">
+    <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">An ARM based Virtual Network designed for change</h1>
+        <div class="post-meta">
+                Written by <a itemprop="name" href="https://rossm.tech" rel="author">Ross McDermott</a> with ♥ 
+                <span class="post-time">
+                on <time datetime=2019-01-24 itemprop="datePublished">January 24, 2019</time>
+                </span>
+                in
+                <i class="iconfont icon-folder"></i>
+                <span class="post-category">
+                        <a href="https://rossm.tech/categories/azure-resource-manager-arm/"> Azure Resource Manager (ARM) </a>
+                        
+                </span>
+        </div>
+    </header>
+    <div class="post-content">
+        
+
+        
+            
+        
+
+        
+        
+     
+          
+          
+          
+
+          
+          
+          
+
+          <p>Creating an ARM template designed for change can be hard. Whilst there are plenty of examples out there on creating basic virtual networks with ARM templates, they generally are not structured to support the ongoing change over time we need. This post outlines an approach and structure that balances simplicity and extensibility while keeping the ARM templates terse and easy to maintain.
+</p>
+
+<p>The accompanying sample ARM templates are available on <a href="https://github.com/ross-mcdermott/azure-network-with-arm" rel="nofollow noreferrer" target="_blank">GitHub</a>. Other typical VNET resources such as VPN configuration can be easily added to this sample, but have been ommitted to focus on the key concepts.</p>
+
+<h2 id="what-are-out-goals">What are out goals?</h2>
+
+<p>There are a few desired attributes which this approach has been designed to cater for:</p>
+
+<ul>
+<li>Easy to mange the VNET and related network resources over time, without needing to be an ARM master.</li>
+<li>Simple to add new Subnets and related NSG / UDR configuration to the VNET.</li>
+<li>Supports the general <a href="https://blogs.msdn.microsoft.com/mvpawardprogram/2018/05/01/azure-resource-manager/" rel="nofollow noreferrer" target="_blank">ARM best practices</a> where possible / practical.</li>
+<li>Conform to &lsquo;infrastructure as code&rsquo; based approches to enable automated deployment (scripted or CI/CD pipeline based)</li>
+</ul>
+
+<h2 id="embracing-convention-over-configuration">Embracing convention over configuration</h2>
+
+<p>One of the biggest benefits in the approach proposed comes from embracing convention over configuration around the creation of subnets and their related &lsquo;best practice&rsquo; resources (NSGs and UDRs). Following the convention based approach provides guard rails for subsequent contributors and ensures the templates, and therefore the Resource Group they are deployed to, evolve in a familiar, and predictable way.</p>
+
+<h2 id="template-structure">Template Structure</h2>
+
+<p>Since we are using some convetions within the template, the actual structure of the template is quite simple. The below shows the logical structure of the sample templates:</p>
+
+<p><figure><img src="/images/ring.svg" data-sizes="auto" data-src="/articles/azure-vnet-arm-templates/design.jpg" alt="Azure VNET ARM Design" class="lazyload"><figcaption class="image-caption">Azure VNET ARM Design</figcaption></figure></p>
+
+<h3 id="variables-subnet-prefixes">Variables: Subnet Prefixes</h3>
+
+<p>The object variable <strong>subnet-address-prefixes</strong> is defined to capture the prefixes for each subnet, this enables a simple &lsquo;at a glance&rsquo; understanding of the shape of the network, and the address spaces in use, and enables rich IDE validation of the properties.</p>
+
+<pre><code class="language-json">...
+&quot;subnet-address-prefixes&quot;: {
+    &quot;mysubnet1Prefix&quot;: &quot;[concat(parameters('vnet-prefix'), '.1.0/24')]&quot;,
+    &quot;mysubnet2Prefix&quot;: &quot;[concat(parameters('vnet-prefix'), '.2.0/24')]&quot;,
+    ...
+    &quot;GatewaySubnetPrefix&quot;: &quot;[concat(parameters('vnet-prefix'), '.255.224/27')]&quot;
+},
+...
+</code></pre>
+
+<p>A handy tool to calculate the Gateway prefix can be found <a href="https://gallery.technet.microsoft.com/scriptcenter/Address-prefix-calculator-a94b6eed" rel="nofollow noreferrer" target="_blank">here</a></p>
+
+<h3 id="variables-subnet-configuration">Variables: Subnet Configuration</h3>
+
+<p>Within the array variable <strong>subnets</strong>, each subnet is configured with basic information, and referencing the appropriate address prefix as defined within  <strong>subnet-address-prefixes</strong>. A slightly special case exists for the GatewaySubnet to ensure the name can be evaluated as a &lsquo;constant&rsquo; in subsequent logic flows to prevent the creation of an NSG resource for it.</p>
+
+<pre><code class="language-json">...
+&quot;subnets&quot;: [
+    {
+        &quot;name&quot;: &quot;mysubnet1&quot;,
+        &quot;addressPrefix&quot;: &quot;[variables('subnet-address-prefixes').mysubnet1Prefix]&quot;,
+        &quot;additionalParameters&quot;: {}
+    },
+    {
+        &quot;name&quot;: &quot;mysubnet2&quot;,
+        &quot;addressPrefix&quot;: &quot;[variables('subnet-address-prefixes').mysubnet2Prefix]&quot;,
+        &quot;additionalParameters&quot;: {}
+    },
+    ...
+    {
+        &quot;name&quot;: &quot;[variables('const_GatewaySubnet')]&quot;,
+        &quot;addressPrefix&quot;: &quot;[variables('subnet-address-prefixes').GatewaySubnetPrefix]&quot;,
+        &quot;additionalParameters&quot;: {}
+    }
+]
+...
+</code></pre>
+
+<p>The properties are defined as:</p>
+
+<table>
+<thead>
+<tr>
+<th>Property</th>
+<th>Type</th>
+<th>Purpose</th>
+</tr>
+</thead>
+
+<tbody>
+<tr>
+<td>name</td>
+<td>string</td>
+<td>The name of the subnet to be created</td>
+</tr>
+
+<tr>
+<td>addressPrexix</td>
+<td>string</td>
+<td>This is mapped to the subnet when being created</td>
+</tr>
+
+<tr>
+<td>additionalParameters</td>
+<td>object</td>
+<td>Provides a standard (convention) for where to define additonal parameters to pass through when creating UDR / NSGs</td>
+</tr>
+</tbody>
+</table>
+
+<h3 id="variables-context">Variables: Context</h3>
+
+<p>Define a common context based object which can be simply passed through to dependent templates, and filled out more as required over time. This enables the standard network based information to be provided to subnet based NSGs etc in a standard way.</p>
+
+<pre><code class="language-json">...
+&quot;context&quot;: {
+    &quot;vnetName&quot;: &quot;[variables('vnet-resource-name')]&quot;,
+    &quot;vnetAddressSpace&quot;: &quot;[variables('vnet-address-space')]&quot;,
+    &quot;subnetAddressPrefixes&quot;: &quot;[variables('subnet-address-prefixes')]&quot;
+}
+...
+</code></pre>
+
+<h3 id="vnet-creation-looping-the-subnets">VNET Creation: Looping the Subnets</h3>
+
+<p>Within the VNET resource, a copy loop exists at the property level, enabling us to loop through each of the above defined subnets to generate the subnet definitons in the required format for the VNET resource. The VNET has an ARM <strong>dependsOn</strong> for the creation of the UDR and NSG resources.</p>
+
+<pre><code class="language-json">...
+&quot;copy&quot;: [
+    {
+        &quot;name&quot;: &quot;subnets&quot;,
+        &quot;count&quot;: &quot;[length(variables('subnets'))]&quot;,
+        &quot;input&quot;: {
+            &quot;name&quot;: &quot;[variables('subnets')[copyIndex('subnets')].name]&quot;,
+            &quot;properties&quot;: {
+                &quot;addressPrefix&quot;: &quot;[variables('subnets')[copyIndex('subnets')].addressPrefix]&quot;,
+                &quot;networkSecurityGroup&quot;: &quot;[if(not(equals(variables('subnets')[copyIndex('subnets')].name,variables('const_GatewaySubnet'))), json(concat('{\&quot;id\&quot;: \&quot;', resourceId(resourceGroup().name, 'Microsoft.Network/networkSecurityGroups/', concat(variables('subnets')[copyIndex('subnets')].name,'-nsg')), '\&quot;}')),json('null'))]&quot;,
+                &quot;routeTable&quot;: {
+                    &quot;id&quot;: &quot;[resourceId(resourceGroup().name, 'Microsoft.Network/routeTables/', concat(variables('subnets')[copyIndex('subnets')].name,'-udr'))]&quot;
+                }
+            }
+        }
+    }
+]
+...
+</code></pre>
+
+<p>You will notice some conditions and logic defining the <strong>networkSecurityGroup</strong> property - this is due of desire to keep the template convetion based while the GatewaySubnet is actually a little different in that it is not supported to apply an NSG to it. Unfortunately the expression and logic syntax for ARM is not particarly readable, so in pseudo code, the expression is in effect doing this logic for us:</p>
+
+<pre><code class="language-js">if(loop[n].name != 'GatewaySubnet'){ 
+    subnet.networkSecurityGroup = {
+        &quot;id&quot;: &quot;&lt;NSG Resouce ID&gt;&quot;
+    }
+}
+else {
+    subnet.networkSecurityGroup = null;
+}
+</code></pre>
+
+<h3 id="subnet-dependency-creation-looping-nested-template">Subnet Dependency Creation: Looping nested template</h3>
+
+<p>For each subnet, the template <strong>nestedtemplate/subnet-dependencies.json</strong> is called as a sub-deployment, passing through the subnet to be created, and the <strong>context</strong> variable used to provide standard information to the template.</p>
+
+<pre><code class="language-json">...
+    &quot;parameters&quot;: {
+        ...
+        &quot;subnet&quot;: {
+            &quot;value&quot;: &quot;[variables('subnets')[copyIndex('subnet-dependency-loop')]]&quot;
+        },
+        &quot;context&quot;: {
+            &quot;value&quot;: &quot;[variables('context')]&quot;
+        }
+    }
+...
+</code></pre>
+
+<p>This template then in turn calls the specific template required based on the subnet object provided. The naming convention required for the NSG and UDR resource templates for each subnet are <strong>nestedtemplates/subnet-{name}-nsg.json</strong> and <strong>nestedtemplates/subnet-{name}-udr.json</strong> respectively.</p>
+
+<h2 id="summary">Summary</h2>
+
+<p>By using a convention based approach, the top level template can be kept simple, while allowing detailed information to be passed through to the nested templates. The additon and defintion of new subnets, and related NSG / UDR rules can be achived easily within minimal changes while retaining the aspect of the best practice use of ARM templates.</p>
+    </div>
+
+   
+
+   
+    <div class="post-tags">
+        
+            <section>
+            <i class="iconfont icon-tag"></i>Tag(s): 
+            
+            <span class="tag"><a href="https://rossm.tech/tags/azure/">
+                    #Azure</a></span>
+            
+            <span class="tag"><a href="https://rossm.tech/tags/best-practice/">
+                    #Best Practice</a></span>
+            
+            <span class="tag"><a href="https://rossm.tech/tags/virtual-network/">
+                    #Virtual Network</a></span>
+            
+            <span class="tag"><a href="https://rossm.tech/tags/arm/">
+                    #ARM</a></span>
+            
+            </section>
+        
+        <section>
+                <a href="javascript:window.history.back();">back</a></span> · 
+                <span><a href="https://rossm.tech">home</a></span>
+        </section>
+    </div>
+
+    <div class="post-nav">
+         
+        
+    </div>
+
+    <div class="post-copyright">
+        <small>
+             
+            <p class="copyright-item">
+                <span>Author:</span>
+                <span>Ross McDermott </span>
+                </p>
+            
+           
+             
+            <p class="copyright-item">
+                    <span>Link:</span>
+                    <a href=https://rossm.tech/2019/01/an-arm-based-virtual-network-designed-for-change/>https://rossm.tech/2019/01/an-arm-based-virtual-network-designed-for-change/</span>
+            </p>
+            
+             
+            <p class="copyright-item lincese">
+                <a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank">license</a>
+            </p>
+            
+        </small>
+    </div>
+
+  
+
+    <div class="post-comment">
+            <script src="https://utteranc.es/client.js"
+                    repo="ross-mcdermott/rossm.tech"
+                    issue-term="pathname"
+                    theme="github-light"
+                    crossorigin="anonymous"
+                    async>
+            </script>
+    </div>
+
+  
+
+   
+</article>
+          </div>
+		   </main>
+      <footer class="footer">
+    <div class="copyright">
+        &copy;
+        
+        <span itemprop="copyrightYear">2019 - 2019</span>
+        
+        <span class="with-love">
+    	 <i class="iconfont icon-love"></i> 
+         </span>
+         
+            <span class="author" itemprop="copyrightHolder"><a href="https://rossm.tech">Ross McDermott</a> | </span> 
+         
+
+         
+		  <span>Powered by <a href="https://gohugo.io/" target="_blank" rel="external nofollow">Hugo</a> & <a href="https://github.com/liuzc/leaveit" target="_blank" rel="external nofollow">LeaveIt</a></span> 
+    </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+    
+     <link href="//lib.baomitu.com/lightgallery/1.6.11/css/lightgallery.min.css" rel="stylesheet">  
+      
+     <script src="/js/vendor_gallery.min.js" async="" ></script>
+    
+  
+
+
+
+     </div>
+  </body>
+</html>
