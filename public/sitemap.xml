@@ -3,7 +3,7 @@
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   
     <url>
-      <loc>https://rossm.tech/2019/01/an-arm-based-virtual-network-you-wont-hate/</loc>
+      <loc>https://rossm.tech/2019/01/an-arm-based-virtual-network-designed-for-change/</loc>
       
       <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       
@@ -13,7 +13,7 @@
     </url>
   
     <url>
-      <loc>https://rossm.tech/categories/arm/</loc>
+      <loc>https://rossm.tech/tags/arm/</loc>
       
       <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       
@@ -37,7 +37,7 @@
     </url>
   
     <url>
-      <loc>https://rossm.tech/categories/azure/</loc>
+      <loc>https://rossm.tech/categories/azure-resource-manager-arm/</loc>
       
       <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       
@@ -109,7 +109,7 @@
     </url>
   
     <url>
-      <loc>https://rossm.tech/categories/virtual-network/</loc>
+      <loc>https://rossm.tech/tags/virtual-network/</loc>
       
       <lastmod>2019-01-24T00:00:00+00:00</lastmod>
       

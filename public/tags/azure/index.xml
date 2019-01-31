@@ -12,13 +12,13 @@
     
     
     <item>
-      <title>An ARM based Virtual Network you won&#39;t hate!</title>
-      <link>https://rossm.tech/2019/01/an-arm-based-virtual-network-you-wont-hate/</link>
+      <title>An ARM based Virtual Network designed for change</title>
+      <link>https://rossm.tech/2019/01/an-arm-based-virtual-network-designed-for-change/</link>
       <pubDate>Thu, 24 Jan 2019 00:00:00 +0000</pubDate>
       
-      <guid>https://rossm.tech/2019/01/an-arm-based-virtual-network-you-wont-hate/</guid>
-      <description>Creating an Azure Virtual Network is one of the most imporant, but complex tasks you may be faced with when defining an Azure environment, whether for a pet project, or a corporate engagement.
-Whilst there are plenty of examples out there on the resources required for a network, this post outlines the approach and structure I have found best balances simplicity and extensibility while keeping the ARM templates terse and easy to maintain.</description>
+      <guid>https://rossm.tech/2019/01/an-arm-based-virtual-network-designed-for-change/</guid>
+      <description>&lt;p&gt;Creating an ARM template designed for change can be hard. Whilst there are plenty of examples out there on creating basic virtual networks with ARM templates, they generally are not structured to support the ongoing change over time we need. This post outlines an approach and structure that balances simplicity and extensibility while keeping the ARM templates terse and easy to maintain.
+&lt;/p&gt;</description>
     </item>
     
   </channel>
